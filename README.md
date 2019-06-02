@@ -19,7 +19,8 @@ dot -Tsvg -O test.dot;
 ### Example
 
 [Dot file][2]
-[Compiled image][3]
+
+![Compiled image][3]
 
 - 6 flags in LaunchDarkly
 - A has a pre-requisite of `B.variation-0`
