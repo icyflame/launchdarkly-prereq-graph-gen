@@ -11,7 +11,13 @@ const options = {
     }
 };
 
-const transform_flag_name = _.snakeCase;
+const transform_flag_name = flag_name => {
+    flag_name = _.snakeCase(flag_name);
+    if (flag_name.match(/^[0-9]/)) {
+        flag_name = 'flag_' + flag_name
+    }
+    return flag_name
+}
 
 request(options, function (error, response, body) {
     if (error) throw new Error(error);
