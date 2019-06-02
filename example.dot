@@ -1,0 +1,12 @@
+digraph prereqs {
+A [ shape=box, label="A;", color=red, style=filled ];
+B [ shape=box, label="B;", color=green, style=filled ];
+C [ shape=box, label="C;", color=green, style=filled ];
+D [ shape=box, label="D;", color=red, style=filled ];
+E [ shape=box, label="E;", color=green, style=filled ];
+F [ shape=box, label="F;", color=green, style=filled ];
+A -> B [ label="variation 0" ];
+C -> D [ label="variation 2" ];
+A -> E [ label="variation 1" ];
+F -> B [ label="variation 0" ];
+}
