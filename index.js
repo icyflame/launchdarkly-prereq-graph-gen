@@ -53,14 +53,16 @@ request(options, function (error, response, body) {
     let dot_file = [ ]
     dot_file.push("digraph prereqs {")
 
-    let label_lines = flat_mapping.map(flag => {
+    let label_lines = flags.items.map(flag => {
         return [
-            flag.key,
+            transform_flag_name(flag.key),
             ' [ shape=box, label="',
-            flag.key,
+            transform_flag_name(flag.key),
             ';',
-            '", color=',
-            flag.status ? 'green' : 'red',
+            '", ',
+            'color=',
+            flag.environments.production.on ? 'green' : 'red',
+            ', style=filled',
             ' ];'
         ].join('')
     })
