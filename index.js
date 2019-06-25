@@ -46,11 +46,10 @@ request(options, function (error, response, body) {
     })
 
     console.log("Full mapping length: " + full_mapping.length)
-    let filtered_mapping = full_mapping.filter(e => !_.isEmpty(e))
-    console.log("Filtered mapping length: " + filtered_mapping.length)
+    const filtered_mapping = _.reject(full_mapping, _.isEmpty)
 
-    let flat_mapping = _.flatten(filtered_mapping)
-    console.log("Flat mapping length: " + flat_mapping.length)
+    const flat_mapping = _.flatten(filtered_mapping)
+    console.log("Total number of pre-requisite relationships: " + flat_mapping.length)
 
     console.log(flat_mapping.length)
     console.log(flat_mapping[0])
@@ -59,7 +58,21 @@ request(options, function (error, response, body) {
     let dot_file = [ ]
     dot_file.push("digraph prereqs {")
 
-    let label_lines = flags.items.map(flag => {
+    const non_uniq_flags_with_prereqs = _.flatten(flat_mapping.map(flag => ([flag.key, flag.depends_on.key])))
+    const flags_with_prereqs = _.uniq(non_uniq_flags_with_prereqs)
+    console.log("Total number of flags with at least one pre-requisite: " + flags_with_prereqs.length)
+
+    let create_label_for_flag = {}
+
+    _.reject(flags_with_prereqs, _.isEmpty).forEach(f => {
+        create_label_for_flag[f] = true
+    })
+
+    const flag_items_with_prereqs = flags.items.filter(flag => create_label_for_flag[transform_flag_name(flag.key)])
+
+    console.log("Flag items with at least one pre-requisite: " + flag_items_with_prereqs.length)
+
+    let label_lines = flag_items_with_prereqs.map(flag => {
         return [
             transform_flag_name(flag.key),
             ' [ shape=box, label="',
